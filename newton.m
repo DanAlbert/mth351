@@ -1,5 +1,5 @@
-f = 'x + exp(1).^(-B*x.^2)';
-fprime = '1 - 2*B*x*exp(1).^(-B*x.^2)';
+f = 'x + exp(1).^(-B.*x.^2)';
+fprime = '1 - 2*B.*x.*exp(1).^(-B.*x.^2)';
 
 clf
 hold on
@@ -19,23 +19,22 @@ end
 
 maxiter = 20;
 
-x = 0.5;
+x = [-0.7, -0.5, -0.4, -0.3, -0.2];
 
-for B = beta
-    iters = [x];
-    
-    for k = 1 : maxiter,
-        xnew = x - eval(f) ./ eval(fprime);
-        iters = [iters; xnew];
-        test = abs(xnew - x) ./ (abs(xnew) + eps);
-        if max(test) < 10 * eps,
-            break;
-        end;
-        x = xnew;
-    end
+iters = x;
 
-    format long
-    fprintf('B = %d', B);
-    iters
-    format
+B = beta;
+for k = 1 : maxiter,
+	xnew = x - eval(f) ./ eval(fprime);
+	iters = [iters; xnew];
+	test = abs(xnew - x) ./ (abs(xnew) + eps);
+	if max(test) < 10 * eps,
+		break;
+	end;
+	x = xnew;
 end
+
+format long
+B
+iters
+format
