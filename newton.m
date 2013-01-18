@@ -1,3 +1,4 @@
+% Determines a root for a function using Newton's Method.
 f = 'x + exp(1).^(-B.*x.^2)';
 fprime = '1 - 2*B.*x.*exp(1).^(-B.*x.^2)';
 
