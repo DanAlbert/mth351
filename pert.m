@@ -1,24 +1,29 @@
-v = poly(1:n);
-vpert = v; vpert(2) = vpert(2) + epsilon;
-r = roots(v);
-rpert = roots(vpert);
+clf
+f = [1, 0, 0, -300, -126, 5005];
+fpert = [1, 0, 0, -300, -126, 5005.001];
+r = roots(f);
+rpert = roots(fpert);
 
 format long
 [sort(r(:)) sort(rpert(:))]
 format
 
-dx = 0.05; x = 0 : dx : n+1;
-y = polyval(v, x);
-ypert = polyval(vpert, x);
-perturbation = epsilon * x.^(n-1);
+dx = 0.0001; x = -5 : dx : 6;
+y = polyval(f, x);
+ypert = polyval(fpert, x);
 
-n1 = 1+(1/dx); n2 = 1+(n/dx);
-maxy = max(abs(y(n1:n2)));
-maxypert = max(abs(ypert(n1:n2)));
-maxperturb = max(abs(perturbation(n1:n2)));
-maxy = 1.1 * max([maxy, maxypert, maxperturb]);
+n1 = 1+(-5/dx); n2 = 1+(6/dx);
+maxy = max(abs(y));
+maxypert = max(abs(ypert));
+maxy = 1.1 * max([maxy, maxypert]);
 
-plot(x, y, x, ypert, '--', x, perturbation, ':', x, zeros(size(x)), '-', 1:n, zeros(1,n), 'o')
-axis([0 n+1 -maxy maxy])
-s = ['n = ', num2str(n), ', \epsilon = ', num2str(epsilon)];
-title(s)
+hold on
+plot(x, y)
+plot(x, ypert, '--')
+plot(x, zeros(size(x)), '-')
+
+%axis([-5 6 -maxy maxy]) % f
+%axis([-3.90915 -3.9091 -.1 .1]) % least sensitive
+axis([4.999 5.002 -.005 .005]) % most sensitive
+
+title('most sensitive')
