@@ -14,26 +14,29 @@ else
 	return;
 end
 
+if cheby ~= 0
+	xn = roots(T);
+	coeffs = polyfit(xn, exp(xn), n);
+else
+	xn = [-1:2/n:1];
+	coeffs = polyfit(xn, exp(xn), n);
+end
+
+f = exp(x);
+p = polyval(coeffs, x);
+
+% plot stuff
 subplot (2, 1, 1);
+axis([-1, 1, 0, 3]);
 hold on;
 
-% plot e^x
-plot(x, exp(x));
-axis([-1, 1, 0, 3]);
-
-% plot polynomial interpolation of e^x
-xn = [-1:2/n:1];
-coeffs = polyfit(xn, exp(xn), n);
-plot(x, polyval(coeffs, x));
+plot(x, f);
+plot(xn, exp(xn), 'o');
+plot(x, p, '--');
 
 subplot (2, 1, 2);
+axis([-1, 1, -1, 1]);
 hold on;
 
-% plot e^x
-plot(x, exp(x));
-axis([-1, 1, 0, 3]);
-
-% plot Chebyshev interpolation of e^x
-xn = roots(T);
-coeffs = polyfit(xn, exp(xn), n);
-plot(x, polyval(coeffs, x));
+plot(x, zeros(length(x)));
+plot(x, f - p);
